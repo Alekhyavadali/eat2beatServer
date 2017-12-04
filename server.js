@@ -73,9 +73,9 @@ app.post("/addDetails", function (req, res) {
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-    var SQL = "INSERT INTO details(username, passwordname) VALUES ?";
+    var SQL = "INSERT INTO details(fullname,username,email,address,targetcalories,phonenumber,age,weight,appcalorieintake,passwordname) VALUES ?";
     var values = [
-        [req.body.uname, req.body.pswd],
+      [req.body.fname, req.body.uname,req.body.email,req.body.address,req.body.targetcalories,req.body.phonenumber,req.body.age,req.body.weight,req.body.calorieintake,req.body.pswd],
     ];
     connection.query(SQL, [values], (err, rows) => {
         debugger;

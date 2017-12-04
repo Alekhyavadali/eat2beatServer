@@ -1,6 +1,3 @@
-
-
-
 const mysql = require('mysql');
 var express = require('express');
 var cors = require('cors');
@@ -19,7 +16,7 @@ const connection = mysql.createConnection({
 app.use(bodyParser.json());
 // use it before all route definitions
 app.use(cors({ origin: '*' }));
-connection.connect((err) => {
+connection.connect(function(err) {
     if (err) { console.log("Error Connecting DB"); }
     else {
         console.log('Connected now!');
@@ -27,32 +24,12 @@ connection.connect((err) => {
 
 });
 
-
-
 app.get("/loginDetails", function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-    //res.send("Send from eatbeat server")
-
-    /*var sql = "CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))";
-    connection.query(sql, function (err, result) {
-        if (err) {
-            console.log("Error Creating Table");
-        }
-        else {
-            console.log("Table created");
-        }
-
-    });*/
-
-    /*CREATE TABLE`sys`.`testTable`(
-        `username` INT NULL,
-        `pswd` VARCHAR(45) NULL);*/
-
-    connection.query('SELECT * FROM details', (err, rows) => {
-
+    connection.query('SELECT * FROM details', function(err, rows)  {
         console.log('Data received from Db:\n from Extract');
         console.log(rows);
         res.send(rows);
@@ -73,22 +50,15 @@ app.post("/addDetails", function (req, res) {
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-    var SQL = "INSERT INTO details(fullname,username,email,address,targetcalories,phonenumber,age,weight,appcalorieintake,passwordname) VALUES ?";
+    var SQL = "INSERT INTO details(username, passwordname) VALUES ?";
     var values = [
-      [req.body.fname, req.body.uname,req.body.email,req.body.address,req.body.targetcalories,req.body.phonenumber,req.body.age,req.body.weight,req.body.calorieintake,req.body.pswd],
+        [req.body.uname, req.body.pswd],
     ];
-    connection.query(SQL, [values], (err, rows) => {
-        debugger;
-        console.log(req.body.uname);
-        console.log('post  working');
-        /* console.log(rows);
-         res.send(rows);*/
+    connection.query(SQL, [values], function(err, rows)  {
+       console.log(req.body.uname);
     });
-
-
-
-    connection.query('SELECT * FROM details', (err, rows) => {
-
+    
+    connection.query('SELECT * FROM details', function(err, rows) {
         console.log('Data received from Db:\n');
         console.log(rows);
         res.send(rows);
@@ -98,4 +68,4 @@ app.post("/addDetails", function (req, res) {
 
 app.listen(8080);
 console.log("Listening on Port 8080")
-/**/
+
